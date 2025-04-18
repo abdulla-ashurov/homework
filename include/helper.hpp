@@ -19,6 +19,11 @@ struct Row {
         : m_city(city), m_a(a), m_b(b), m_category(category) {}
 };
 
+bool operator==(const Row &first, const Row &second) {
+    return first.m_a == second.m_a && first.m_b == second.m_b && 
+           first.m_city == second.m_city && first.m_category == second.m_category;
+}
+
 bool try_parse_to_double(const std::string &str, double &num) {
     std::istringstream iss(str);
     iss >> num;

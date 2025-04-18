@@ -1,6 +1,8 @@
 #include "catch_amalgamated.hpp"
 #include "constants.hpp"
 
+#include <iostream>
+
 TEST_CASE("Test read function") {
     SECTION("It can parse valid input data from CSV file") {
         std::vector<Row> dataset;
