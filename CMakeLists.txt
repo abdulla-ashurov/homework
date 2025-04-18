@@ -13,3 +13,6 @@ add_library(UNIT_TESTS_LIB STATIC ${SOURCE_LIB})
 add_executable(UNIT_TESTS ${SOURCE_EXE})
 
 target_link_libraries(UNIT_TESTS UNIT_TESTS_LIB)
+
+enable_testing()
+add_test(NAME CatchTests COMMAND UNIT_TESTS)
