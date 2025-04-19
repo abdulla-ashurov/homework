@@ -55,3 +55,28 @@ TEST_CASE("Test grouped_analysis") {
         REQUIRE(value == expected_value);
     }
 }
+
+TEST_CASE("Test optimization_problem") {
+    SECTION("It can calculate optimization problem") {
+        std::vector<Row> dataset;
+        read(VALID_DATASET_FILE, dataset);
+
+        std::pair<double, double> expected_value = {1.89, 10.31};
+        std::pair<double, double> value = optimization_problem(dataset);
+
+        REQUIRE(value.first == expected_value.first);
+        REQUIRE(value.second == expected_value.second);
+    }
+}
+
+TEST_CASE("Test parameter_sensitivity") {
+    SECTION("It can calculate parameter sensitivity") {
+        std::vector<Row> dataset;
+        read(VALID_DATASET_FILE, dataset);
+
+        double expected_value = 2.516667;
+        double value = parameter_sensitivity(dataset);
+
+        REQUIRE(value == expected_value);
+    }
+}

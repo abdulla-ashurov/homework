@@ -144,7 +144,7 @@ double get_median(std::vector<double> &nums) {
     }
 
     std::sort(nums.begin(), nums.end());
-    
+
     if (nums.size() % 2 == 0) {
         return (nums[nums.size() / 2 - 1] + nums[nums.size() / 2]) / 2.0;
     }
@@ -164,6 +164,80 @@ double grouped_analysis(const std::vector<Row> &dataset) {
     }
 
     return std::round(sum * 1000.0) / 1000.0;
+}
+
+double compute_average_h_fixed_a(double a, const std::vector<Row> &dataset) {
+    double sum = 0.0;
+    size_t count = 0;
+
+    for (const auto &row : dataset) {
+        if (row.m_city == "Paris") {
+            sum += func02(a, row.m_b, row.m_category).second;
+            count++;
+        }
+    }
+
+    return count > 0 ? sum / count : -1e9;
+}
+
+std::pair<double, double> optimization_problem(const std::vector<Row> &dataset) {
+    double a_min = std::numeric_limits<double>::max();
+    double a_max = std::numeric_limits<double>::lowest();
+
+    for (const auto &row : dataset) {
+        a_min = std::min(a_min, row.m_a);
+        a_max = std::max(a_max, row.m_a);
+    }
+
+    const double precision = 1e-5;
+    while (a_max - a_min > precision) {
+        double mid1 = a_min + (a_max - a_min) / 3.0;
+        double mid2 = a_max - (a_max - a_min) / 3.0;
+
+        double h1 = compute_average_h_fixed_a(mid1, dataset);
+        double h2 = compute_average_h_fixed_a(mid2, dataset);
+
+        if (h1 < h2) {
+            a_min = mid1;
+        } else {
+            a_max = mid2;
+        }
+    }
+
+    double best_a = (a_min + a_max) / 2.0;
+    double best_avg_h = compute_average_h_fixed_a(best_a, dataset);
+
+    return std::make_pair(
+        std::round(best_a * 100.0) / 100.0,
+        std::round(best_avg_h * 100.0) / 100.0
+    );
+}
+
+double parameter_sensitivity(const std::vector<Row> &dataset) {
+    const double DELTA = 0.0001;
+
+    double sum_g_plus = 0.0;
+    double sum_g_minus = 0.0;
+    size_t count = 0;
+
+    for (const auto &row : dataset) {
+        if (row.m_city == "New York") {
+            double g_plus = func02(1.0 + DELTA, row.m_b, row.m_category).first;
+            double g_minus = func02(1.0 - DELTA, row.m_b, row.m_category).first;
+
+            sum_g_plus += g_plus;
+            sum_g_minus += g_minus;
+            
+            count++;
+        }
+    }
+
+    double avg_g_plus = sum_g_plus / count;
+    double avg_g_minus = sum_g_minus / count;
+
+    double sensitivity = (avg_g_plus - avg_g_minus) / (2 * DELTA);
+
+    return std::round(sensitivity * 1000000.0) / 1000000.0;
 }
 
 #endif // __HELPER_HPP__
