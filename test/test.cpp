@@ -80,3 +80,23 @@ TEST_CASE("Test parameter_sensitivity") {
         REQUIRE(value == expected_value);
     }
 }
+
+#include <iostream>
+
+TEST_CASE("Final Test based input large data") {
+    SECTION("Final Test based input large data") {
+        const std::string DATASET_FILE("interview_dataset.csv");
+        
+        std::vector<Row> dataset;
+        read(DATASET_FILE, dataset);
+
+        std::cout << "Q1: " << get_average_value_of_g(dataset) << std::endl;
+        std::cout << "Q2: " << filtered_calculation(dataset) << std::endl;
+        std::cout << "Q3: " << grouped_analysis(dataset) << std::endl;
+
+        std::pair<double, double> res = optimization_problem(dataset);
+        std::cout << "Q4: " << res.first << " " << res.second << std::endl;
+
+        std::cout << "Q5: " << parameter_sensitivity(dataset) << std::endl;
+    }
+}
