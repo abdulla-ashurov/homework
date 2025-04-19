@@ -10,6 +10,7 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
+#include <unordered_map>
 
 struct Row {
     double m_a;
@@ -118,6 +119,51 @@ double get_average_value_of_g(const std::vector<Row> &dataset) {
     double average_value = sum / dataset.size();
 
     return std::round(average_value * 10000.0) / 10000.0;
+}
+
+double filtered_calculation(const std::vector<Row> &dataset) {
+    double sum = 0.0;
+    for (const auto &row : dataset) {
+        if (row.m_city == "Tokyo") {
+            std::pair<double, double> res = func02(row.m_a, row.m_b, row.m_category);
+            double g = res.first;
+            double h = res.second;
+
+            if (g > 1.0) {
+                sum += h;
+            }
+        }
+    }
+
+    return std::round(sum * 100.0) / 100.0;
+}
+
+double get_median(std::vector<double> &nums) {
+    if (nums.empty()) {
+        return 0.0;
+    }
+
+    std::sort(nums.begin(), nums.end());
+    
+    if (nums.size() % 2 == 0) {
+        return (nums[nums.size() / 2 - 1] + nums[nums.size() / 2]) / 2.0;
+    }
+
+    return nums[nums.size() / 2];
+}
+
+double grouped_analysis(const std::vector<Row> &dataset) {
+    std::unordered_map<std::string, std::vector<double>> category_to_g_values;
+    for (const auto &row : dataset) {
+        category_to_g_values[row.m_category].push_back(func02(row.m_a, row.m_b, row.m_category).first);
+    }
+
+    double sum = 0.0;
+    for (const auto &key : {"p", "q", "r", "s"}) {
+        sum += get_median(category_to_g_values[key]);
+    }
+
+    return std::round(sum * 1000.0) / 1000.0;
 }
 
 #endif // __HELPER_HPP__

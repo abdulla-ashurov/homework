@@ -31,3 +31,27 @@ TEST_CASE("Test get_average_value_of_g") {
         REQUIRE(value == expected_value);
     }
 }
+
+TEST_CASE("Test filtered_calculation") {
+    SECTION("It can calculate sum of all h where g is greater than 1 from valid dataset") {
+        std::vector<Row> dataset;
+        read(VALID_DATASET_FILE, dataset);
+
+        double expected_value = 13.83;
+        double value = filtered_calculation(dataset);
+
+        REQUIRE(value == expected_value);
+    }
+}
+
+TEST_CASE("Test grouped_analysis") {
+    SECTION("It can calculate g median value for each unique values of c") {
+        std::vector<Row> dataset;
+        read(VALID_DATASET_FILE, dataset);
+
+        double expected_value = 21.211;
+        double value = grouped_analysis(dataset);
+
+        REQUIRE(value == expected_value);
+    }
+}
