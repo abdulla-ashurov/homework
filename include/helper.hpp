@@ -1,3 +1,5 @@
+// Abdulla Ashurov, RQD* Clearing
+
 #ifndef __HELPER_HPP__
 #define __HELPER_HPP__
 
@@ -52,6 +54,9 @@ bool try_parse(const std::string &line, Row &row) {
 
 void read(const std::string &FILE_NAME, std::vector<Row> &out) {
     std::ifstream in(FILE_NAME);
+    if (!in.is_open()) {
+        return;
+    }
     
     // Ignore column names
     std::string line;
@@ -102,6 +107,17 @@ std::pair<double, double> func02(double a, double b, const std::string &c) {
     h = std::round(h * 1000000) / 1000000;
     
     return std::make_pair(g, h);
+}
+
+double get_average_value_of_g(const std::vector<Row> &dataset) {
+    double sum = 0.0;
+    for (const auto &row : dataset) {
+        sum += func02(row.m_a, row.m_b, row.m_category).first;
+    }
+
+    double average_value = sum / dataset.size();
+
+    return std::round(average_value * 10000.0) / 10000.0;
 }
 
 #endif // __HELPER_HPP__
