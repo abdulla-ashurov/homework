@@ -3,9 +3,9 @@
 
 #include "../include/helper.hpp"
 
-const std::string VALID_DATASET_FILE = "D:\\Projects\\homework\\test\\payloads\\valid_dataset.csv";
-const std::string INVALID_DATASET_FILE = "D:\\Projects\\homework\\test\\payloads\\invalid_dataset.csv";
-const std::string VALID_AND_INVALID_DATASET_FILE = "D:\\Projects\\homework\\test\\payloads\\valid_and_invalid_dataset.csv";
+const std::string VALID_DATASET_FILE = "test/payloads/valid_dataset.csv";
+const std::string INVALID_DATASET_FILE = "test/payloads/invalid_dataset.csv";
+const std::string VALID_AND_INVALID_DATASET_FILE = "test/payloads/valid_and_invalid_dataset.csv";
 
 const std::vector<Row> EXPECTED_VALID_DATASET = {
     Row("Berlin", -0.5762802920519917, 1.727867251915578, "s"),
